@@ -65,3 +65,10 @@
   flex-wrap: wrap;
 }
 
+
+.totalbillingamounts {
+  font-size: 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

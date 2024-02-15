@@ -2,6 +2,7 @@ import PageLoaders from "components/Loders/PageLoaders";
 import React from "react";
 import { Navigate, RouteObject } from "react-router";
 import ProtectedRouteWrapper from "./ProtectedRoute";
+import OrderDetailsOverview from "pages/dashboard/branch/OrderOverview/OrderDetailsOverview";
 
 /* These lines of code are using the React.lazy function to dynamically import the components for each
 route. React.lazy is a function that allows for lazy loading of components, meaning that the
@@ -89,6 +90,16 @@ const DashBoardRoutes: RouteObject[] = [
       <PageLoaders>
         <ProtectedRouteWrapper>
           <OrderOverview />
+        </ProtectedRouteWrapper>
+      </PageLoaders>
+    )
+  },
+  {
+    path: "/dashboard/branch/:id/order/details/:orderid",
+    element: (
+      <PageLoaders>
+        <ProtectedRouteWrapper>
+          <OrderDetailsOverview />
         </ProtectedRouteWrapper>
       </PageLoaders>
     )

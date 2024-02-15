@@ -27,15 +27,17 @@ import { queryClient } from "index";
 import { toast } from "sonner";
 import { Modal } from "antd";
 
+
 interface Props {
   window?: () => Window;
   defaultHeader?: boolean;
+  onBack?: () => void;
 }
 
 const drawerWidth = 240;
 
 export default function Header(props: Props) {
-  const { defaultHeader } = props;
+  const { defaultHeader, onBack } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -148,7 +150,7 @@ export default function Header(props: Props) {
                 variant="outlined"
                 color="info"
                 startIcon={<BackArrowIcon IconHeight="24" IconWidth="24" />}
-                onClick={() => navigate("/dashboard/branch/")}
+                onClick={onBack ? onBack : () => navigate(-1)}
               >
                 <Typography>Go Back</Typography>
               </CustomButtonPrimary>

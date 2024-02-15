@@ -42,16 +42,6 @@ function OrderPendingToken({
                 <Link href={`mailto:${personMail}`}>{personMail}</Link>
               </Box>
             </ListItem>
-            <ListItem>
-              <Box className="orderpendingListlocation">
-                <i>
-                  <img src={assest.locationIcon} alt="" />
-                </i>
-                <Typography variant="body1">
-                  6 The Marlins, Northwood, HA6 3NP
-                </Typography>
-              </Box>
-            </ListItem>
           </List>
           <Box className="paymentStatusBox">
             <Box className="paymentText">

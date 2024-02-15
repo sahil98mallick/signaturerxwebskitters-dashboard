@@ -1,22 +1,8 @@
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import {
-  Box,
-  Button,
-  IconButton,
-  LinearProgress,
-  MenuItem,
-  Stack,
-  Typography
-} from "@mui/material";
+import { Box, Button, IconButton, LinearProgress, MenuItem, Stack, Typography } from "@mui/material";
 import Wrapper from "Layout/Wrapper/Wrapper";
 import CommonHeader from "components/CommonHeader/CommonHeader";
-
 import OrderOverviewCard from "components/OrderOverviewCard/OrderOverviewCard";
-import CustomButtonPrimary from "ui/CustomButtons/CustomButtonPrimary";
-
-import OrderOverviewCollectedCard from "components/OrderOverviewCard/OrderOverViewCollected";
-import OrderOverviewRejectedCard from "components/OrderOverviewCard/OrderOverviewRejected";
-import PaginationSection from "components/Pagination/Pagination";
 import assest from "json/assest";
 import { useEffect, useMemo, useState } from "react";
 import { OrderOverviewWrapper } from "styles/StyledComponents/OrderOverViewWrapper";
@@ -24,17 +10,9 @@ import InputFieldCommon from "ui/CommonInput/CommonInput";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
-import {
-  CollectedRows,
-  PendingRows,
-  RejectedRows,
-  filter_dataSet,
-  infoArray
-} from "json/mock/orderoverview.mock";
+import { filter_dataSet } from "json/mock/orderoverview.mock";
 import CustomSelect from "ui/Filter/CustomSelect";
 import Filter1Dropdown from "ui/Filter/Filter1Dropdown";
-import OnlineToggleTab from "ui/Filter/OnlineToggletab";
 import OrderOverviewFilterTab from "ui/Filter/OrderOverViewFiltertab";
 import SortingIcon from "ui/Icons/SortingIcon";
 import { useParams } from "react-router";
@@ -42,14 +20,11 @@ import { useQuery } from "react-query";
 import { getBranchdetails } from "api/functions/pharmacy-branch-api";
 import { BranchorderCount, Orderreceivedlists } from "api/functions/order.api";
 import { OrderStatusesEnum, OrderStatusesType } from "typescript/interface/order.interface";
-type orderCountinterface = {
-  status: string;
-  count: number | string;
-}
+
 
 export default function OrderOverview() {
   const [online, setonline] = useState(true);
-  const names = ["Ascending", "Descending"];
+  const [sortkey, setSortkey] = useState<string>()
   const [filterData, setfilterData] = useState("Pending");
   const [orderStatus, setorderStatus] = useState("pending");
   const onDataCallbackFilter = (data: any) => {
@@ -100,6 +75,9 @@ export default function OrderOverview() {
   })
 
   console.log(`All ${filterData} Lists`, orderlists);
+
+  console.log("Sort Selected Item:-", sortkey);
+  
   if (isLoading) return <div><LinearProgress color="inherit" /></div>;
 
   return (
@@ -193,15 +171,14 @@ export default function OrderOverview() {
                 className="form_select"
                 defaultValue=""
                 displayEmpty
+                value={sortkey}
+                onChange={(e) => setSortkey(e.target.value as unknown as string)}
+
               >
                 <MenuItem value="">Sort</MenuItem>
-                {names.map((name) => (
-                  <MenuItem key={name} value={name} className="menu_item">
-                    {name}
-                  </MenuItem>
-                ))}
+                <MenuItem value={"ASC"} className="menu_item">Ascending</MenuItem>
+                <MenuItem value={"DSC"} className="menu_item">Descending</MenuItem>
               </CustomSelect>
-
               {filterData === "Pending" && (
                 <Box className="filter_tab">
                   <OrderOverviewFilterTab />
@@ -216,17 +193,16 @@ export default function OrderOverview() {
               />
             </Box>
           </Box>
-
           {filterData === "Pending"
             ? (
-              <><OrderOverviewCard orderoverdata={orderlists} /></>
+              <><OrderOverviewCard orderoverdata={orderlists} orderid={Number(id)} /></>
             )
             : filterData === "Collected"
               ? (
-                <><OrderOverviewCard orderoverdata={orderlists}/></>
+                <><OrderOverviewCard orderoverdata={orderlists} orderid={Number(id)} /></>
               )
               : (
-                <><OrderOverviewCard orderoverdata={orderlists}/></>
+                <><OrderOverviewCard orderoverdata={orderlists} orderid={Number(id)} /></>
               )
           }
         </OrderOverviewWrapper>

@@ -26,10 +26,12 @@ import { TableWrapper } from "styles/StyledComponents/OrderOverViewCardWrapper";
 import { Orderoverviewcardinterface } from "typescript/interface/orderoverviewcard.interface";
 import CustomButtonPrimary from "ui/CustomButtons/CustomButtonPrimary";
 type Props = {
-  orderoverdata: Orderoverviewcardinterface
+  orderoverdata: Orderoverviewcardinterface;
+  orderid: number
 }
 
-const OrderOverviewCard = ({ orderoverdata }: Props) => {
+const OrderOverviewCard = ({ orderoverdata, orderid }: Props) => {
+  const dateformat = "YYYY-MM-DD, HH:mm"
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,9 +41,8 @@ const OrderOverviewCard = ({ orderoverdata }: Props) => {
     setAnchorEl(null);
   };
   console.log("Orderviewdata by Status:-", orderoverdata?.data?.docs);
+  console.log("Order ID-:", orderid);
 
-
-  const dateformat = "YYYY-MM-DD, HH:mm:ss"
   return (
     <>
       {
@@ -183,14 +184,17 @@ const OrderOverviewCard = ({ orderoverdata }: Props) => {
                               </TableCell>
                               <TableCell align="right">
                                 <Box className="action_button">
-                                  <CustomButtonPrimary
-                                    variant="contained"
-                                    color="primary"
-                                    buttonType="small"
-                                    endIcon={<ArrowForwardIcon />}
-                                  >
-                                    <Typography variant="body1">View</Typography>
-                                  </CustomButtonPrimary>
+                                  <Link to={`/dashboard/branch/${orderid}/order/details/${item?.id}`}>
+                                    <CustomButtonPrimary
+                                      variant="contained"
+                                      color="primary"
+                                      buttonType="small"
+                                      endIcon={<ArrowForwardIcon />}
+
+                                    >
+                                      <Typography variant="body1">View</Typography>
+                                    </CustomButtonPrimary>
+                                  </Link>
                                 </Box>
                               </TableCell>
                             </TableRow>

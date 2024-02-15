@@ -20,3 +20,11 @@ export const Orderreceivedlists = async (data: Iorderreceivedlists) => {
 
     }
 }
+
+export const Orderdetailsoverview = async (
+    id: string | number,
+    location: "patient" | "pharmacy"
+) => {
+    const response = await axiosInstance.get(endpoints.order.orderdetailsoverview(id, location))
+    return response.data.data
+}

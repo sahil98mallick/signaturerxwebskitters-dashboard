@@ -18,9 +18,11 @@ export const endpoints = {
         list: "pharmacy-branch/assigned/list",
         branchdetails: (id: number) => `pharmacy-branch/get/${id}`,
     },
-    order:{
+    order: {
         orderCount: "/order/count/by-status",
         orderReceivedList: "/order/received/list",
+        orderdetailsoverview: (id: string | number, location: "pharmacy" | "patient") =>
+        `/order/detail/${id}?location=${location}`,
     }
 };
 
