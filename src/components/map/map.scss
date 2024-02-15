@@ -1,0 +1,73 @@
+#map {
+  height: 500px;
+  position: relative;
+  border-radius: 8px;
+
+  .markerDiv {
+    .innerDiv {
+      position: relative;
+
+      img {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        left: 3px;
+        bottom: 0;
+        height: 50px;
+        width: 50px;
+        border-radius: 50px;
+        z-index: 5;
+      }
+    }
+
+    &.active {
+      svg {
+        path {
+          fill: var(--primaryMain);
+        }
+      }
+    }
+  }
+
+  .control_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    color: rgb(25, 25, 25);
+    cursor: pointer;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 38px;
+    margin: 8px 0 22px;
+    padding: 0 5px;
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary);
+    background: var(--white);
+
+    /* Shadow/Container/Small */
+    box-shadow: 0px 0px 2px 0px rgba(7, 7, 7, 0.08);
+
+    &.minus_btn {
+      span {
+        width: 15px;
+        height: 3px;
+        background-color: var(--black);
+      }
+    }
+  }
+
+  .zoom_in {
+    right: 80px !important;
+  }
+
+  .zoom_out {
+    right: 20px !important;
+  }
+}
