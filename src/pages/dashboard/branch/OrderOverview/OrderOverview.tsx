@@ -59,7 +59,7 @@ export default function OrderOverview() {
 
   // Order Received Lists fetch
   const { data: orderlists, isLoading: orderlistloading, isError: orderlistserror } = useQuery({
-    queryKey: ["orderlists", { id, filterData, sortkey }],
+    queryKey: ["orderlists", { id, filterData}],
     queryFn: () => Orderreceivedlists(
       {
         pharmacyBranchId: Number(id),
@@ -79,8 +79,6 @@ export default function OrderOverview() {
   console.log("Sort Selected Item:-", sortkey);
 
   if (isLoading) return <div><LinearProgress color="inherit" /></div>;
-
-  if (orderlistloading) return <div><LinearProgress color="inherit" /></div>;
   return (
     <Wrapper>
       <Box className="body_layout">
