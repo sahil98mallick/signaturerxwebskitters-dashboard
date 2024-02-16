@@ -23,7 +23,17 @@ export const endpoints = {
         orderReceivedList: "/order/received/list",
         orderdetailsoverview: (id: string | number, location: "pharmacy" | "patient") =>
         `/order/detail/${id}?location=${location}`,
-    }
+    },
+    payout: {
+        summary: "/report/payout/summary",
+        download: {
+          csv: "/report/payout/csv"
+        },
+        monthlySummary: "/report/monthly/summary",
+        overview: (id: string) => `/report/payout/overview/${id}`,
+        orderList: "/report/payout/order/list",
+        topPerformingBranch: "/report/top/performing/branches"
+      },
 };
 
 

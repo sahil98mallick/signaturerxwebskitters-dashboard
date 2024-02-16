@@ -1,12 +1,20 @@
 import { Box, Grid, Stack } from "@mui/material";
 import Wrapper from "Layout/Wrapper/Wrapper";
 import { primaryColors } from "Theme/_muiPalette";
+import { Result } from "antd";
+import { fetchpharmacybranchlists } from "api/functions/pharmacy-branch-api";
+import { payoutOrderSummary } from "api/functions/report.api";
 import CommonHeader from "components/CommonHeader/CommonHeader";
+import NotFoundResult from "components/NotFound/NotFoundResult";
 import PaginationSection from "components/Pagination/Pagination";
 import PayoutSummary from "components/PayoutSummary/PayoutSummary";
 import ReportCard from "components/ReportModule/ReportCard";
 import TopPerformingBranches from "components/TopPerformingBranches/TopPerformingBranches";
+import dayjs, { Dayjs } from "dayjs";
+import { useDebounce } from "hooks/general/useDebounce";
 import assest from "json/assest";
+import { useMemo, useState } from "react";
+import { useQuery } from "react-query";
 import { ReportsWrapper } from "styles/StyledComponents/ReportsWrapper";
 import CustomButtonPrimary from "ui/CustomButtons/CustomButtonPrimary";
 import BillIcon from "ui/Icons/BillIcon";
@@ -18,6 +26,92 @@ import PayoutIcon from "ui/Icons/PayoutIcon";
 import PeopleIcon from "ui/Icons/PeopleIcon";
 
 const Reports = () => {
+
+  const [limit, setLimit] = useState<number>(5);
+  const [page, setPage] = useState<number>(1);
+  const [sortBy, setSortBy] = useState<"ASC" | "DESC">("ASC");
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
+  const [open, setOpen] = useState(false);
+  const [searchInput, setsearchInput] = useState("");
+  const search = useDebounce(searchInput, 500);
+  const [filename, setfilename] = useState("");
+
+
+  const { data: pharmacyBranchListData } = useQuery(
+    ["pharmacy-branch-list", 1],
+    {
+      queryFn: ({ signal }) =>
+      fetchpharmacybranchlists(
+          {
+            page: 1,
+            length: 1,
+            search: "",
+            sortBy: "id",
+            sortOrder: "DESC"
+          },
+          // signal
+        ),
+      refetchOnWindowFocus: true,
+      refetchOnMount: true
+    }
+  );
+
+  const userHasAtLeastOneBranch = Boolean(
+    pharmacyBranchListData?.data?.data.totalRecords &&
+      pharmacyBranchListData?.data?.data.totalRecords !== 0
+  );
+
+  
+
+
+
+  const params = useMemo(() => {
+    return {
+      desiredMonth: Number(selectedDate?.format("MM")) || 1,
+      desiredYear: Number(selectedDate?.format("YYYY")) || 2000,
+      length: limit,
+      page: page,
+      sortOrder: sortBy,
+      keyword: search
+    };
+  }, [selectedDate, limit, page, search, sortBy]);
+
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["payout", "reports", JSON.stringify(params)],
+    queryFn: () => payoutOrderSummary(params),
+    refetchOnWindowFocus: true,
+    enabled: userHasAtLeastOneBranch
+  });
+   const userHasAtLeastOneSummary = Boolean(
+    data?.data?.totalRecords &&
+      data?.data?.totalRecords !== 0
+  );
+  const monthlyPayoutSummaryParams = useMemo(() => {
+    const currentDate = dayjs();
+    return {
+      desiredMonth: Number(currentDate?.format("MM")),
+      desiredYear: Number(currentDate?.format("YYYY")),
+      monthName: currentDate?.format("MMM")
+    };
+  }, []);
+
+
+  // if (!userHasAtLeastOneSummary ) {
+  //   return (
+      
+  //         <Box className="body_layout">
+  //           <Result
+  //             status="info"
+  //             icon={<NotFoundResult text="No payout-summary found" />}
+              
+  //           />
+  //         </Box>
+       
+  //   );
+  // }
+
+
   return (
     <Wrapper defaultHeader>
       <ReportsWrapper>
@@ -100,7 +194,23 @@ const Reports = () => {
             </Grid>
           </Grid>
           <TopPerformingBranches />
-          <PayoutSummary />
+          <PayoutSummary
+            onChangeSortBy={setSortBy}
+            selectedSortBy={sortBy}
+            datePickerProps={{
+              value: selectedDate,
+              onChange: setSelectedDate
+            }}
+            reports={data?.data.docs}
+            isLoading={isLoading}
+            searchProps={{
+              value: searchInput,
+              onChange: (e) => {
+                setsearchInput(e.target.value);
+                setPage(1);
+              }
+            }}
+          />
           <PaginationSection />
         </Box>
       </ReportsWrapper>

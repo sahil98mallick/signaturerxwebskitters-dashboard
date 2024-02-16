@@ -1,4 +1,3 @@
-/* eslint-disable no-lone-blocks */
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import {
