@@ -119,3 +119,84 @@
   justify-content: flex-start;
   flex-direction: column;
 }
+
+.main-contents {
+  width: 90%;
+  height: auto;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+
+}
+
+.pharmacyinfo {
+  width: 350px;
+  height: 350px;
+  /* background-color: #61dafb; */
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pharmacyinformation {
+  width: 50% !important;
+  height: auto;
+  padding-bottom: 10px;
+  /* background-color: #282c34; */
+  margin: auto;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+}
+
+.pharmacyimage {
+  width: 250px;
+  height: 250px;
+  border-radius: 20px;
+}
+
+.pharmacypricetable {
+  width: 80%;
+  margin: auto;
+  height: auto;
+  padding-bottom: 5px;
+  /* background-color: #282c34; */
+  border-radius: 20px;
+}
+
+.mapview {
+  width: 100%;
+  height: 500px;
+  background-color: #A6CAFA;
+  border-radius: 20px;
+  margin: auto;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+}
+
+
+@media only screen and (max-width: 900px) {
+  .main-contents {
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pharmacyinformation {
+    width: 100% !important;
+  }
+}

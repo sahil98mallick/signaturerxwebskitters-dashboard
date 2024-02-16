@@ -284,7 +284,7 @@ export default function Header(props: Props) {
                       "aria-labelledby": "basic-button"
                     }}
                   >
-                    <MenuItem onClick={handleClose2}>Profile</MenuItem>
+                    <Link to={"/dashboard/pharmacy/information"}><MenuItem onClick={handleClose2}>Pharmacy</MenuItem></Link>
                     <MenuItem onClick={handleClose2}>My account</MenuItem>
                     <MenuItem onClick={() => { setIsModalVisible(true) }}>Logout</MenuItem>
                   </Menu>

@@ -26,6 +26,9 @@ export const endpoints = {
     },
     notification: {
         notify: "notification/list"
+    },
+    Pharmacies: {
+        pharmacyfetch: "pharmacy/fetch",
     }
 };
 
