@@ -66,7 +66,7 @@ export default function OrderOverview() {
         page: 1,
         length: 5,
         keyword: "",
-        sortOrder: sortkey,
+        sortOrder: "",
         orderStatus: orderStatus,
         actionPendingBy: ""
       }
