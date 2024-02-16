@@ -25,7 +25,13 @@ import { useAppDispatch } from "hooks/redux/useAppDispatch";
 import { logout } from "redux-toolkit/slices/userSlice";
 import { queryClient } from "index";
 import { toast } from "sonner";
-import { Modal } from "antd";
+import { Avatar, Badge, Modal } from "antd";
+import { useQuery } from "react-query";
+import { Getnotificationdetails } from "api/functions/notification.api";
+import { NoticationData, NoticationDocs } from "typescript/interface/notification.interface";
+import { Divider } from "@mui/material";
+import dayjs from "dayjs";
+import MailIcon from "ui/Icons/MailIcon";
 
 
 interface Props {
@@ -36,6 +42,7 @@ interface Props {
 
 const drawerWidth = 240;
 
+const dateformat = "LL"
 export default function Header(props: Props) {
   const { defaultHeader, onBack } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -75,6 +82,17 @@ export default function Header(props: Props) {
     setMobileOpen(!mobileOpen);
   };
 
+  // Notification API Handle
+  const { data: notificationlists, isLoading: notifyloading, isError: notifyError } = useQuery({
+    queryKey: ["notificationlists"],
+    queryFn: () => Getnotificationdetails({
+      page: 1,
+      length: 5,
+      onlyUnread: true
+    })
+  })
+
+  // console.log("Notification Details:-", notificationlists);
   const drawer = (
     <DrawerWrapper>
       <List disablePadding className="navigate_list">
@@ -216,9 +234,34 @@ export default function Header(props: Props) {
                       "aria-labelledby": "basic-button"
                     }}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={handleClose} style={{ padding: "20px" }}>
+                      <Typography variant="h4">Notification&nbsp;
+                        <Badge count={notificationlists?.totalRecords} size="default">
+                        </Badge>
+                      </Typography>
+                    </MenuItem>
+                    <Divider />
+                    <Box className="notificationmenudesign">
+                      {
+                        notificationlists?.docs?.map((item: NoticationDocs, key: number) => {
+                          return (
+                            <>
+                              <MenuItem onClick={handleClose} style={{ padding: "20px" }}>
+                                {item?.message} <br />
+                                {dayjs(item?.createdAt).format(dateformat)} ||
+                                <Button size="small" color="error">{item?.isRead ? (<>Viewed</>) : (<>New</>)}</Button>
+                              </MenuItem>
+                            </>
+                          )
+                        })
+                      }
+                    </Box>
+                    <Divider />
+                    <MenuItem onClick={handleClose} style={{ paddingBottom: "5px" }}>
+                      <Typography variant="h5" style={{ textAlign: "center" }}>
+                        Want to Show All Notification <Link to="/dashboard/notification">Click Me</Link>
+                      </Typography>
+                    </MenuItem>
                   </Menu>
                 </Box>
                 <Box className="each_item">

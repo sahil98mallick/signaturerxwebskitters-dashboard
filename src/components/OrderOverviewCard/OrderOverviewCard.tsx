@@ -190,7 +190,6 @@ const OrderOverviewCard = ({ orderoverdata, orderid }: Props) => {
                                       color="primary"
                                       buttonType="small"
                                       endIcon={<ArrowForwardIcon />}
-
                                     >
                                       <Typography variant="body1">View</Typography>
                                     </CustomButtonPrimary>
@@ -200,9 +199,6 @@ const OrderOverviewCard = ({ orderoverdata, orderid }: Props) => {
                             </TableRow>
                           </TableBody>
                           <TableFooter>
-                            {/* rejected */}
-                            {/* pending */}
-                            {/* collected */}
                             <TableRow>
                               <TableCell>
                                 {

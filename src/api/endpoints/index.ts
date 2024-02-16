@@ -22,7 +22,10 @@ export const endpoints = {
         orderCount: "/order/count/by-status",
         orderReceivedList: "/order/received/list",
         orderdetailsoverview: (id: string | number, location: "pharmacy" | "patient") =>
-        `/order/detail/${id}?location=${location}`,
+            `/order/detail/${id}?location=${location}`,
+    },
+    notification: {
+        notify: "notification/list"
     }
 };
 

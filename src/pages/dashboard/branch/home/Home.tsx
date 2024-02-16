@@ -8,6 +8,7 @@ import { fetchpharmacybranchlists } from "api/functions/pharmacy-branch-api";
 import CommonHeader from "components/CommonHeader/CommonHeader";
 import HomeTableSkeleton from "components/HomeTable/HomeTableSkeleton";
 import NotFoundResult from "components/NotFound/NotFoundResult";
+import HomePaginationSection from "components/Pagination/HomePagination";
 import PaginationSection from "components/Pagination/Pagination";
 import { useAppSelector } from "hooks/redux/useAppSelector";
 import assest from "json/assest";
@@ -69,7 +70,6 @@ const Home = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const { userData } = useAppSelector((s) => s.userSlice)
   const [filterdata, setFilterdata] = useState({
     data: {
@@ -81,7 +81,7 @@ const Home = () => {
   })
 
   const pageNumber = Number(filterdata.data.page) || 1;
-  const lengthNumber = Number(filterdata.data.length) || 5;
+  const lengthNumber = Number(filterdata.data.length) || 10;
 
   const { data: branchlists, isLoading: branchlistloading, isError: branchlisterror } = useQuery({
     queryFn: () => fetchpharmacybranchlists({
@@ -140,6 +140,7 @@ const Home = () => {
                 }
               </Stack>
             </CommonHeader>
+            
             {/* Home Table View */}
             {
               branchlistloading ? (
@@ -163,11 +164,13 @@ const Home = () => {
                 </>
               )
             }
-            <PaginationSection />
+            <HomePaginationSection
+            />
           </BranchWrapper>
         </Box>
       </Wrapper>
 
+      
       {/* CSV Modal */}
       <Modal
         open={open}

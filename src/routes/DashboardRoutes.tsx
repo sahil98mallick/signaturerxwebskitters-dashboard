@@ -40,8 +40,8 @@ const Reports = React.lazy(() => import("pages/dashboard/reports/Reports"));
 const ForgetPassword = React.lazy(
   () => import("pages/auth/forget/Forgetpass")
 );
-const Signup = React.lazy(() => import("pages/auth/Signup/Signup")
-);
+const Signup = React.lazy(() => import("pages/auth/Signup/Signup"));
+const Notification = React.lazy(() => import("pages/notifications/Notification"));
 
 /* The `routes` constant is an array of objects that define the routes for a React application. Each
 object in the array represents a specific route and contains two properties: `path` and `element`. */
@@ -100,6 +100,16 @@ const DashBoardRoutes: RouteObject[] = [
       <PageLoaders>
         <ProtectedRouteWrapper>
           <OrderDetailsOverview />
+        </ProtectedRouteWrapper>
+      </PageLoaders>
+    )
+  },
+  {
+    path: "/dashboard/notification",
+    element: (
+      <PageLoaders>
+        <ProtectedRouteWrapper>
+          <Notification />
         </ProtectedRouteWrapper>
       </PageLoaders>
     )

@@ -8,7 +8,7 @@ interface PaginationSectionProps {
   currentPage: number;
   onPageChange: (page: number) => void;
   }
-function PaginationSection() {
+function HomePaginationSection() {
   const [number, setnumber] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -53,4 +53,4 @@ function PaginationSection() {
   );
 }
 
-export default PaginationSection;
+export default HomePaginationSection;
