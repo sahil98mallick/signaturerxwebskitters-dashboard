@@ -37,6 +37,9 @@ export const endpoints = {
       topPerformingBranch: "/report/top/performing/branches",
       notification: {
         notify: "notification/list"
+    },
+    Pharmacies: {
+        pharmacyfetch: "pharmacy/fetch",
     }
 };
 

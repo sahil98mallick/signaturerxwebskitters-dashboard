@@ -9,6 +9,8 @@ import PageLoaders from "components/Loders/PageLoaders";
 import { Provider } from "react-redux";
 import { store } from "redux-toolkit/store/store";
 import { Toaster } from "sonner";
+import "leaflet/dist/leaflet.css";
+import "react-leaflet-fullscreen/styles.css";
 const App = React.lazy(() => import("./App"));
 
 const root = ReactDOM.createRoot(
