@@ -9,17 +9,16 @@ import CommonHeader from "components/CommonHeader/CommonHeader";
 import HomeTableSkeleton from "components/HomeTable/HomeTableSkeleton";
 import NotFoundResult from "components/NotFound/NotFoundResult";
 import HomePaginationSection from "components/Pagination/HomePagination";
-import PaginationSection from "components/Pagination/Pagination";
 import { useAppSelector } from "hooks/redux/useAppSelector";
 import assest from "json/assest";
-import React, { lazy, useState } from "react";
+import React, { lazy, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router";
 import { UserRoleEnum } from "typescript/interface/auth.interface";
-import { IpharmacyBranchListResponse } from "typescript/interface/pharmacy-branch.interface";
 import InputFieldCommon from "ui/CommonInput/CommonInput";
 import CustomButtonPrimary from "ui/CustomButtons/CustomButtonPrimary";
 const HomeTable = lazy(() => import("../../../../components/HomeTable/HomeTable"));
+
 const BranchWrapper = styled(Box)`
   .search_field {
     @media (max-width: 1199px) {
@@ -93,7 +92,20 @@ const Home = () => {
     }),
     queryKey: "branchlists"
   })
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredOrderLists = useMemo(() => {
+    if (!searchQuery) return branchlists?.data.data.docs;
+    return branchlists?.data.data.docs?.filter((order: any) =>
+      order?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order?.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order?.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order?.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order?.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order?.country.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order?.postcode.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order?.status.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [branchlists?.data.data.docs, searchQuery]);
   return (
     <>
       <Wrapper defaultHeader>
@@ -109,6 +121,8 @@ const Home = () => {
                 <Box className="search_field">
                   <InputFieldCommon
                     placeholder="Search branch.."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     adorMentIcon={<SearchRoundedIcon />}
                   />
                 </Box>
@@ -140,13 +154,13 @@ const Home = () => {
                 }
               </Stack>
             </CommonHeader>
-            
+
             {/* Home Table View */}
             {
               branchlistloading ? (
                 <><HomeTableSkeleton /></>
               ) : !!branchlists?.data.data.docs?.length ? (
-                <><HomeTable data={branchlists?.data.data.docs} /></>
+                <><HomeTable data={filteredOrderLists} /></>
               ) : (
                 <>
                   <Result
@@ -170,7 +184,7 @@ const Home = () => {
         </Box>
       </Wrapper>
 
-      
+
       {/* CSV Modal */}
       <Modal
         open={open}

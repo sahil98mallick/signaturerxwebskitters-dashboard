@@ -28,7 +28,7 @@ const Pharmacyinformation = () => {
     // console.log("lat", pharmacydetails?.latitude);
     // console.log("long", pharmacydetails?.longitude);
 
-    const mapposition: LatLngExpression = useMemo(() => [pharmacydetails?.longitude, pharmacydetails?.latitude], [pharmacydetails]);
+    const mapposition: LatLngExpression = useMemo(() => [pharmacydetails?.longitude || 54.989, pharmacydetails?.latitude || 73.369], [pharmacydetails]);
     if (isLoading) return <> <div><LinearProgress /></div> </>
     return (
         <>
@@ -45,7 +45,7 @@ const Pharmacyinformation = () => {
                             <Typography variant='body2'>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, perspiciatis ipsam! Commodi consequatur non reiciendis tempore saepe. Minima, laboriosam perferendis!
                             </Typography>
-                            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="InfoImage"
+                            <img src={pharmacydetails?.logo || "https://e7.pngegg.com/pngimages/748/441/png-clipart-logo-pharmacy-pills-miscellaneous-trademark.png"} alt="InfoImage"
                                 className='pharmacyimage' />
                             <Button color='primary' variant='contained' size='large'
                                 startIcon={<BackupIcon />} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
