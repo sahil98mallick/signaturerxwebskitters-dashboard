@@ -53,7 +53,7 @@ const Login = () => {
   const { isLoggedIn } = useAppSelector((s) => s.userSlice);
 
   const LoginSubmit = (data: LoginSchemaFormData) => {
-    console.log("Login data:-", data);
+    // console.log("Login data:-", data);
     mutate(
       { ...data },
       {
@@ -63,7 +63,7 @@ const Login = () => {
             if (res?.data) {
               const { access, ...userData } = res?.data?.data
               toast.success(messages.success.loginsuccess(res?.data?.data.name))
-              console.log("Token:-", access);
+              // console.log("Token:-", access);
               dispatch(setAccessToken(access));
               dispatch(setUserData(userData));
               navigate("/dashboard/branch");
@@ -78,7 +78,7 @@ const Login = () => {
     if (isLoggedIn) {
       navigate("/dashboard/branch");
     }
-  }, []);
+  }, [isLoggedIn]);
 
   if (status === "error") {
     // @ts-ignore
@@ -122,18 +122,35 @@ const Login = () => {
                     />
                   </Box>
                   <Box className="loginSubmitButton">
-                    <CustomButtonPrimary
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      loading={isLoading}
-                    >
-                      <Typography variant="body1">Log in</Typography>
-                    </CustomButtonPrimary>
+                    {
+                      isLoading ? (
+                        <>
+                          <CustomButtonPrimary
+                            type="submit"
+                            variant="contained"
+                            color="secondary"
+                            fullWidth
+                            disabled
+                          >
+                            <Typography variant="body1">Loading...</Typography>
+                          </CustomButtonPrimary>
+                        </>
+                      ) : (
+                        <>
+                          <CustomButtonPrimary
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                          >
+                            <Typography variant="body1">Log in</Typography>
+                          </CustomButtonPrimary>
+                        </>
+                      )
+                    }
                   </Box>
                   <Box mb={2} className="loginSubmitButton">
-                  <Link
+                    <Link
                       to="/auth/forgetpass"
                       style={{ textDecoration: "none" }}
                     >

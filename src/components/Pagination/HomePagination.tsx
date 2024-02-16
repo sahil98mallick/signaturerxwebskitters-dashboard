@@ -2,30 +2,13 @@ import { Box, FormControl, List, ListItem, MenuItem, Select, SelectChangeEvent, 
 import React from "react";
 import Pagination from "@mui/material/Pagination";
 import { PaginationWrapper } from "styles/StyledComponents/PaginationWrapper";
-
-
-
-  interface PaginationSectionProps {
-    onChangeLimit?: ((event: SelectChangeEvent<any>, child: React.ReactNode) => void)
-    limit?: number;
-    count?: number;
-    setPage?: ((event: React.ChangeEvent<unknown>, page: number) => void)
-    page?: number;
+interface PaginationSectionProps {
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
   }
-
-
-
-
-
-function PaginationSection(
-  {
-    limit,
-    onChangeLimit,
-    count,
-    setPage,
-    page
-  }: PaginationSectionProps
-) {
+function HomePaginationSection() {
   const [number, setnumber] = React.useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -70,4 +53,4 @@ function PaginationSection(
   );
 }
 
-export default PaginationSection;
+export default HomePaginationSection;

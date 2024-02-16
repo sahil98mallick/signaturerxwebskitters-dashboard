@@ -20,3 +20,24 @@ export const truncateString = (str: string, length: number) => {
 
   return str;
 };
+
+export const calculateUpDownPercentage = (prev?: number, curr?: number) => {
+  let obj: {
+    percentage: null | number | string;
+    up: boolean | null;
+  } = {
+    percentage: null,
+    up: null
+  };
+  if (typeof prev === "number" && typeof curr === "number") {
+    if (prev !== 0) {
+      obj.percentage = (((curr - prev) / Math.abs(prev)) * 100).toFixed(2);
+      obj.up = curr > prev;
+    } else {
+      obj.percentage = (curr !== undefined && curr !== 0 ? 100 : 0).toFixed(2);
+      obj.up = curr !== undefined && curr > Number(prev);
+    }
+  }
+
+  return obj;
+};

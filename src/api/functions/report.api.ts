@@ -1,6 +1,6 @@
 import axiosInstance from "api/axiosInstance";
 import { endpoints } from "api/endpoints";
-import { PayoutOrderSummaryResponse, PayoutOrderSummaryVariables } from "typescript/interface/report.interface";
+import { PayoutMonthlySummaryQueryResponse, PayoutMonthlySummaryQueryVariables, PayoutOrderSummaryResponse, PayoutOrderSummaryVariables, PayoutTopPerformingBrancheResponse } from "typescript/interface/report.interface";
 import { AxiosResponse } from "axios";
 
 
@@ -20,6 +20,16 @@ export const payoutOrderSummary = async (
       )
       ?.then((res) => res?.data);
   };
+
+
+export const payoutMonthlySummaryQuery = async (
+  data: PayoutMonthlySummaryQueryVariables
+) => {
+  return axiosInstance.post<PayoutMonthlySummaryQueryResponse>(
+    endpoints.payout.monthlySummary,
+    data
+  );
+};
   
   export type DownloadPayoutCSVVariables = {
     desiredYear: number;
@@ -33,4 +43,16 @@ export const payoutOrderSummary = async (
       responseType: "blob"
     });
   };
+
+  export const payoutTopPerformingBranches = async (
+    data: Omit<PayoutOrderSummaryVariables, "sortOrder">,
+    signal?: AbortSignal
+  ) => {
+    return axiosInstance.post<PayoutTopPerformingBrancheResponse>(
+      endpoints.payout.topPerformingBranch,
+      data,
+      { signal }
+    );
+  };
+  
   

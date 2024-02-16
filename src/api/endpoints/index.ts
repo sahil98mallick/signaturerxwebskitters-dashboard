@@ -34,6 +34,10 @@ export const endpoints = {
         orderList: "/report/payout/order/list",
         topPerformingBranch: "/report/top/performing/branches"
       },
+      topPerformingBranch: "/report/top/performing/branches",
+      notification: {
+        notify: "notification/list"
+    }
 };
 
 

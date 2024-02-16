@@ -50,15 +50,30 @@ const CardWrapper = styled(Card)`
     }
   }
 `;
-interface ReportCardProps {
+// interface ReportCardProps {
+//   money: string;
+//   month: string;
+//   description: string;
+//   descriptionIcon: JSX.Element;
+//   chipIcon: JSX.Element;
+//   chipColor: ChipOwnProps["color"];
+//   chipLabel: string;
+// }
+
+
+type ReportCardProps = {
   money: string;
   month: string;
   description: string;
   descriptionIcon: JSX.Element;
+  isLoading?: boolean;
+  hideProgressChip?: boolean;
   chipIcon: JSX.Element;
   chipColor: ChipOwnProps["color"];
   chipLabel: string;
-}
+};
+
+
 
 export default function ReportCard({
   chipIcon,

@@ -15,6 +15,29 @@ import {
     search?: string;
   };
 
+  export type PayoutMonthlySummaryQueryVariables = {
+    desiredYear: number;
+    desiredMonth: number;
+  };
+
+  export interface PayoutAmount {
+    previousMonthCount: number;
+    desiredMonthCount: number;
+  }
+  
+
+  export type PayoutMonthlySummaryQueryResponse = Omit<
+  BaseApiResponse,
+  "data"
+> & {
+  data: {
+    revenueAmount: PayoutAmount;
+    payoutAmount: PayoutAmount;
+    orderCount: PayoutAmount;
+  };
+};
+  
+
   export type PayoutReportType = {
     createdAt: string;
     orderCount: number;
@@ -29,9 +52,37 @@ import {
     payoutInitiateDate: string;
   };
 
+  export interface IPayoutTopPerformingBranch {
+    pharmacyBranchId: number;
+    branchName: string;
+    branchAddress: string;
+    branchCity: string;
+    branchPostcode: string;
+    branchCountry: string;
+    totalPaidAmount: string;
+    totalPayoutAmount: string;
+    totalPlatformFeeAmount: string;
+    totalPendingOrders: string;
+    totalCollectedOrders: string;
+    totalCancelledOrders: string;
+    code: string;
+  }
+
   
 
   export type PayoutOrderSummaryResponse = Omit<BasePaginationData, "docs"> & {
     docs: PayoutReportType[];
   };
+
+  export interface PayoutTopPerformingBranchesData {
+    data: IPayoutTopPerformingBranch[];
+  }
   
+  
+  export type PayoutTopPerformingBrancheResponse = Omit<
+  BaseApiResponse,
+  "data"
+> & {
+  data: PayoutTopPerformingBranchesData;
+  pagination: PaginationResponseType;
+};

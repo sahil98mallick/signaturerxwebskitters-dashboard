@@ -3,7 +3,7 @@ import Wrapper from "Layout/Wrapper/Wrapper";
 import { primaryColors } from "Theme/_muiPalette";
 import { Result } from "antd";
 import { fetchpharmacybranchlists } from "api/functions/pharmacy-branch-api";
-import { payoutOrderSummary } from "api/functions/report.api";
+import { payoutMonthlySummaryQuery, payoutOrderSummary } from "api/functions/report.api";
 import CommonHeader from "components/CommonHeader/CommonHeader";
 import NotFoundResult from "components/NotFound/NotFoundResult";
 import PaginationSection from "components/Pagination/Pagination";
@@ -13,6 +13,7 @@ import TopPerformingBranches from "components/TopPerformingBranches/TopPerformin
 import dayjs, { Dayjs } from "dayjs";
 import { useDebounce } from "hooks/general/useDebounce";
 import assest from "json/assest";
+import { calculateUpDownPercentage } from "lib/common.lib";
 import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { ReportsWrapper } from "styles/StyledComponents/ReportsWrapper";
@@ -62,7 +63,7 @@ const Reports = () => {
   );
 
   
-
+  
 
 
   const params = useMemo(() => {
@@ -97,19 +98,56 @@ const Reports = () => {
   }, []);
 
 
-  // if (!userHasAtLeastOneSummary ) {
-  //   return (
-      
-  //         <Box className="body_layout">
-  //           <Result
-  //             status="info"
-  //             icon={<NotFoundResult text="No payout-summary found" />}
-              
-  //           />
-  //         </Box>
-       
-  //   );
-  // }
+  console.log("Order Summary:-", data);
+  
+
+  const { data: monthlySummary, isLoading: monthlySummaryIsLoading } = useQuery(
+    {
+      queryKey: [
+        "monthly",
+        "payout",
+        "summary",
+        JSON.stringify(monthlyPayoutSummaryParams)
+      ],
+      queryFn: () =>
+        payoutMonthlySummaryQuery({
+          desiredMonth: monthlyPayoutSummaryParams?.desiredMonth,
+          desiredYear: monthlyPayoutSummaryParams?.desiredYear
+        }),
+      enabled: userHasAtLeastOneBranch
+    }
+  );
+
+  const monthlySummaryData = monthlySummary?.data;
+
+  const revenueCalculation = useMemo(() => {
+    return calculateUpDownPercentage(
+      monthlySummaryData?.data.revenueAmount?.previousMonthCount,
+      monthlySummaryData?.data.revenueAmount?.desiredMonthCount
+    );
+  }, [
+    monthlySummaryData?.data.revenueAmount?.desiredMonthCount,
+    monthlySummaryData?.data.revenueAmount?.previousMonthCount
+  ]);
+  const payoutAmountCalculation = useMemo(() => {
+    return calculateUpDownPercentage(
+      monthlySummaryData?.data.payoutAmount?.previousMonthCount,
+      monthlySummaryData?.data.payoutAmount?.desiredMonthCount
+    );
+  }, [
+    monthlySummaryData?.data.payoutAmount?.desiredMonthCount,
+    monthlySummaryData?.data.payoutAmount?.previousMonthCount
+  ]);
+  const orderCountCalculation = useMemo(() => {
+    return calculateUpDownPercentage(
+      monthlySummaryData?.data.orderCount?.previousMonthCount,
+      monthlySummaryData?.data.orderCount?.desiredMonthCount
+    );
+  }, [
+    monthlySummaryData?.data.orderCount?.desiredMonthCount,
+    monthlySummaryData?.data.orderCount?.previousMonthCount
+  ]);
+
 
 
   return (
@@ -138,7 +176,7 @@ const Reports = () => {
             </CommonHeader>
           </Box>
 
-          <Grid container spacing={2} className="cards_wrapper">
+          {/* <Grid container spacing={2} className="cards_wrapper">
             <Grid item lg={3} sm={6} xs={12}>
               <ReportCard
                 money="£1000"
@@ -192,7 +230,102 @@ const Reports = () => {
                 chipLabel={"2 %"}
               />
             </Grid>
+          </Grid> */}
+
+            
+          <Grid container spacing={2} className="cards_wrapper">
+            <Grid item lg={4} sm={6} xs={12}>
+              <ReportCard
+                isLoading={monthlySummaryIsLoading}
+                money={`£ ${
+                  monthlySummaryData?.data.revenueAmount?.desiredMonthCount || 0
+                }`}
+                month={monthlyPayoutSummaryParams?.monthName}
+                description={"Revenues total"}
+                descriptionIcon={
+                  <PayInicon IconColor={primaryColors?.textDisabled} />
+                }
+                chipIcon={
+                  revenueCalculation?.up !== null && revenueCalculation?.up ? (
+                    <OutgoingIcon />
+                  ) : (
+                    <IncomingIcon />
+                  )
+                }
+                chipColor={
+                  revenueCalculation?.up !== null && revenueCalculation?.up
+                    ? "success"
+                    : "error"
+                }
+                chipLabel={`${revenueCalculation?.percentage} %`}
+                hideProgressChip={revenueCalculation?.percentage === null}
+              />
+            </Grid>
+
+            <Grid item lg={4} sm={6} xs={12}>
+              <ReportCard
+                isLoading={monthlySummaryIsLoading}
+                money={`£${
+                  monthlySummaryData?.data.payoutAmount?.desiredMonthCount || 0
+                }`}
+                month={monthlyPayoutSummaryParams?.monthName}
+                description={"Payouts total"}
+                descriptionIcon={
+                  <PayoutIcon IconColor={primaryColors?.textDisabled} />
+                }
+                chipIcon={
+                  payoutAmountCalculation?.up !== null &&
+                  payoutAmountCalculation?.up ? (
+                    <OutgoingIcon />
+                  ) : (
+                    <IncomingIcon />
+                  )
+                }
+                chipColor={
+                  payoutAmountCalculation?.up !== null &&
+                  payoutAmountCalculation?.up
+                    ? "success"
+                    : "error"
+                }
+                chipLabel={`${payoutAmountCalculation?.percentage} %`}
+                hideProgressChip={payoutAmountCalculation?.percentage === null}
+              />
+            </Grid>
+        
+            <Grid item lg={4} sm={6} xs={12}>
+              <ReportCard
+                isLoading={monthlySummaryIsLoading}
+                money={`${
+                  monthlySummaryData?.data.orderCount?.desiredMonthCount || 0
+                }`}
+                month={monthlyPayoutSummaryParams?.monthName}
+                description={"Orders total"}
+                descriptionIcon={
+                  <BillIcon IconColor={primaryColors?.textDisabled} />
+                }
+                chipIcon={
+                  orderCountCalculation?.up !== null &&
+                  orderCountCalculation?.up ? (
+                    <OutgoingIcon />
+                  ) : (
+                    <IncomingIcon />
+                  )
+                }
+                chipColor={
+                  orderCountCalculation?.up !== null &&
+                  orderCountCalculation?.up
+                    ? "success"
+                    : "error"
+                }
+                chipLabel={`${orderCountCalculation?.percentage} %`}
+                hideProgressChip={orderCountCalculation?.percentage === null}
+              />
+            </Grid>
           </Grid>
+
+
+
+
           <TopPerformingBranches />
           <PayoutSummary
             onChangeSortBy={setSortBy}
@@ -211,7 +344,18 @@ const Reports = () => {
               }
             }}
           />
-          <PaginationSection />
+         {Boolean(data?.data.docs?.length) && (
+            <PaginationSection
+              limit={limit}
+              count={data?.data.totalPages}
+              onChangeLimit={(e) => {
+                setLimit(e.target.value);
+                setPage(1);
+              }}
+              setPage={(e, value) => setPage(value)}
+              page={page}
+            />
+          )}
         </Box>
       </ReportsWrapper>
     </Wrapper>
