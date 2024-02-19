@@ -200,3 +200,11 @@
     width: 100% !important;
   }
 }
+
+/* Perosonal Information */
+.personalcontainer {
+  width: 90%;
+  height: auto;
+  margin: auto;
+  padding-bottom: 10px;
+}

@@ -92,7 +92,15 @@ export default function Header(props: Props) {
     })
   })
 
-  // console.log("Notification Details:-", notificationlists);
+  const logoutfunc = () => {
+    setIsModalVisible(true);
+    setAnchorEl2(null);
+  }
+
+  const gotopage = () => {
+    navigate("/dashboard/account/information")
+    setAnchorEl2(null);
+  }
   const drawer = (
     <DrawerWrapper>
       <List disablePadding className="navigate_list">
@@ -138,7 +146,6 @@ export default function Header(props: Props) {
       </Box>
     </DrawerWrapper>
   );
-
   return (
     <HeaderWrap sx={{ display: "flex" }}>
       <AppBar
@@ -285,8 +292,8 @@ export default function Header(props: Props) {
                     }}
                   >
                     <Link to={"/dashboard/pharmacy/information"}><MenuItem onClick={handleClose2}>Pharmacy</MenuItem></Link>
-                    <MenuItem onClick={handleClose2}>My account</MenuItem>
-                    <MenuItem onClick={() => { setIsModalVisible(true) }}>Logout</MenuItem>
+                    <MenuItem onClick={() => { gotopage() }}>My account</MenuItem>
+                    <MenuItem onClick={() => { logoutfunc() }}>Logout</MenuItem>
                   </Menu>
                 </Box>
                 <Modal

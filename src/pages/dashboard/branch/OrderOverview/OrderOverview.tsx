@@ -59,7 +59,7 @@ export default function OrderOverview() {
 
   // Order Received Lists fetch
   const { data: orderlists, isLoading: orderlistloading, isError: orderlistserror } = useQuery({
-    queryKey: ["orderlists", { id, filterData}],
+    queryKey: ["orderlists", { id, filterData }],
     queryFn: () => Orderreceivedlists(
       {
         pharmacyBranchId: Number(id),
