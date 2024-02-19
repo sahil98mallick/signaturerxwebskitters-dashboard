@@ -1,19 +1,31 @@
-import { Box, FormControl, List, ListItem, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
+// HomePaginationSection.tsx
+
+import { Box, FormControl, List, ListItem, MenuItem, Select, Typography } from "@mui/material";
 import React from "react";
 import Pagination from "@mui/material/Pagination";
 import { PaginationWrapper } from "styles/StyledComponents/PaginationWrapper";
+
 interface PaginationSectionProps {
   totalItems: number;
   itemsPerPage: number;
   currentPage: number;
   onPageChange: (page: number) => void;
-  }
-function HomePaginationSection() {
-  const [number, setnumber] = React.useState("");
+}
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setnumber(event.target.value as string);
+const HomePaginationSection: React.FC<PaginationSectionProps> = ({
+  totalItems,
+  itemsPerPage,
+  currentPage,
+  onPageChange,
+}) => {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    if (typeof value === 'number') {
+      onPageChange(value);
+    }
   };
+
   return (
     <PaginationWrapper>
       <Box className="paginationsection">
@@ -26,13 +38,11 @@ function HomePaginationSection() {
               <Box>
                 <FormControl fullWidth>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={number}
+                    value={itemsPerPage}
                     displayEmpty
-                    onChange={handleChange}
+                    onChange={(e) => onPageChange(1)}
                   >
-                    <MenuItem value="">5</MenuItem>
+                    <MenuItem value={5}>5</MenuItem>
                     <MenuItem value={10}>10</MenuItem>
                     <MenuItem value={20}>20</MenuItem>
                     <MenuItem value={30}>30</MenuItem>
@@ -46,11 +56,17 @@ function HomePaginationSection() {
           </List>
         </Box>
         <Box className="paginationSetionWrapper">
-          <Pagination count={10} variant="outlined" shape="rounded" />
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            variant="outlined"
+            shape="rounded"
+            onChange={handleChange}
+          />
         </Box>
       </Box>
     </PaginationWrapper>
   );
-}
+};
 
 export default HomePaginationSection;

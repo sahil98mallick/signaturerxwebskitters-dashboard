@@ -51,6 +51,7 @@ const BranchWrapper = styled(Box)`
     margin-bottom: 12px;
   }
 `;
+
 const modalstyle = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -66,6 +67,9 @@ const modalstyle = {
 };
 const Home = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -79,20 +83,21 @@ const Home = () => {
     }
   })
 
-  const pageNumber = Number(filterdata.data.page) || 1;
-  const lengthNumber = Number(filterdata.data.length) || 10;
+  // const pageNumber = Number(filterdata.data.page) || 1;
+  // const lengthNumber = Number(filterdata.data.length) || 10;
 
   const { data: branchlists, isLoading: branchlistloading, isError: branchlisterror } = useQuery({
     queryFn: () => fetchpharmacybranchlists({
-      page: pageNumber,
-      length: lengthNumber,
-      search: "",
+      page: currentPage,
+      length: itemsPerPage,
+      search: searchQuery,
       sortBy: "id",
       sortOrder: "DESC"
     }),
-    queryKey: "branchlists"
+    queryKey: ["branchlists", currentPage, searchQuery]
   })
-  const [searchQuery, setSearchQuery] = useState("");
+
+  // Search Implementation
   const filteredOrderLists = useMemo(() => {
     if (!searchQuery) return branchlists?.data.data.docs;
     return branchlists?.data.data.docs?.filter((order: any) =>
@@ -106,6 +111,10 @@ const Home = () => {
       order?.status.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [branchlists?.data.data.docs, searchQuery]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <>
       <Wrapper defaultHeader>
@@ -179,11 +188,14 @@ const Home = () => {
               )
             }
             <HomePaginationSection
+              totalItems={branchlists?.data.data.totalRecords || 0}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
             />
           </BranchWrapper>
         </Box>
       </Wrapper>
-
 
       {/* CSV Modal */}
       <Modal
