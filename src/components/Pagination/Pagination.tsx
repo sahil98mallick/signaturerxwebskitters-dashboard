@@ -5,14 +5,24 @@ import { PaginationWrapper } from "styles/StyledComponents/PaginationWrapper";
 
 
 
+  // interface PaginationSectionProps {
+  //   onChangeLimit?: ((event: SelectChangeEvent<any>, child: React.ReactNode) => void)
+  //   limit?: number;
+  //   count?: number;
+  //   setPage?: ((event: React.ChangeEvent<unknown>, page: number) => void)
+  //   page?: number;
+  // }
   interface PaginationSectionProps {
-    onChangeLimit?: ((event: SelectChangeEvent<any>, child: React.ReactNode) => void)
+    onChangeLimit?:
+      | ((event: SelectChangeEvent<any>, child: React.ReactNode) => void)
+      | undefined;
     limit?: number;
     count?: number;
-    setPage?: ((event: React.ChangeEvent<unknown>, page: number) => void)
+    setPage?:
+      | ((event: React.ChangeEvent<unknown>, page: number) => void)
+      | undefined;
     page?: number;
   }
-
 
 
 
@@ -63,7 +73,15 @@ function PaginationSection(
           </List>
         </Box>
         <Box className="paginationSetionWrapper">
-          <Pagination count={10} variant="outlined" shape="rounded" />
+          <Pagination 
+          onChange={setPage}
+          count={count}
+          variant="outlined"
+          shape="rounded"
+          page={page}
+          
+          
+          />
         </Box>
       </Box>
     </PaginationWrapper>

@@ -25,6 +25,9 @@ import {
 import { payoutTopPerformingBranches } from "api/functions/report.api";
 import { ModalWrapper } from "styles/StyledComponents/ModalWrapper";
 import TopPerformBranchListRow from "./TopPerformBranchListRow";
+import useUrlState from "@ahooksjs/use-url-state";
+import { useMemoizedFn } from "ahooks";
+// import IpharmacyBranchListResponse from '../../../src/typescript/interface/pharmacy-branch.interface'
   
   const TopPerformBranchList = ({
     open,
@@ -55,12 +58,47 @@ import TopPerformBranchListRow from "./TopPerformBranchListRow";
         page: page
       };
     }, [selectedDate, limit, page]);
+
+    const [filterParams, setFilterParams] = useUrlState(
+      {
+        search: "",
+        length: 50,
+        page: 1
+      },
+      {
+        navigateMode: "replace",
+        stringifyOptions: {
+          skipEmptyString: true,
+          strict: true,
+          arrayFormat: "comma"
+        }
+      }
+    );
+
+    const pageNumber = Number(filterParams?.page) || 1;
+    const lengthNumber = Number(filterParams?.length) || 5;
+  
   
     const { data, isLoading } = useQuery({
-      queryKey: ["payoutTopPerformingBrancheListAll", JSON.stringify(payload)],
-      queryFn: ({ signal }) => payoutTopPerformingBranches(payload, signal),
+      queryKey: ["payoutTopPerformingBrancheListAll", JSON.stringify(payload), lengthNumber, pageNumber],
+      queryFn: () => payoutTopPerformingBranches(payload),
       refetchOnWindowFocus: false
     });
+
+
+    
+  
+   
+  
+    const updateFilterParams = useMemoizedFn((newValues: typeof filterParams) => {
+      setFilterParams((prevParams) => {
+        return {
+          ...prevParams,
+          ...newValues
+        };
+      });
+    });
+  
   
     return (
       <ModalWrapper disableEnforceFocus fullScreen open={open} onClose={onClose}>
@@ -128,14 +166,23 @@ import TopPerformBranchListRow from "./TopPerformBranchListRow";
                 ) : null}
               </Stack>
               <PaginationSection
-                limit={limit}
-                count={data?.data.pagination?.totalPages}
+                // limit={limit}
+                // count={data?.data.pagination?.totalPages}
+                // onChangeLimit={(e) => {
+                //   setLimit(e.target.value);
+                //   setPage(1);
+                // }}
+                // setPage={(e, value) => setPage(value)}
+                // page={page}
+
+                limit={lengthNumber}
+                count={data?.data?.pagination?.totalPages}
                 onChangeLimit={(e) => {
-                  setLimit(e.target.value);
-                  setPage(1);
+                  updateFilterParams({ length: e.target.value, page: 1 });
+                  
                 }}
-                setPage={(e, value) => setPage(value)}
-                page={page}
+                setPage={(e, value) => updateFilterParams({ page: value })}
+                page={pageNumber}
               />
             </TableContainer>
           </HomeTableWrapper>

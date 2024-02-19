@@ -15,8 +15,13 @@ import PayoutIcon from "ui/Icons/PayoutIcon";
 import PeopleIcon from "ui/Icons/PeopleIcon";
 import PharmacyIcon from "ui/Icons/PharmacyIcon";
 import { InfoBox } from "../branch/OrderOverview/OrderOverview";
+import useUrlState from "@ahooksjs/use-url-state";
+
 
 const PayoutOverview = () => {
+
+  
+
   const [paid, setpaid] = useState(false);
   const infoArray = [
     {
@@ -102,7 +107,9 @@ const PayoutOverview = () => {
           <PayoutOverViewFilter />
 
           <PayoutOverviewTable />
-          <PaginationSection />
+          <PaginationSection 
+              
+          />
         </Box>
       </PayoutOverViewWrapper>
     </Wrapper>

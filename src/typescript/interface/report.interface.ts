@@ -66,6 +66,7 @@ import {
     totalCollectedOrders: string;
     totalCancelledOrders: string;
     code: string;
+    totalPages: number;
   }
 
   
@@ -85,4 +86,5 @@ import {
 > & {
   data: PayoutTopPerformingBranchesData;
   pagination: PaginationResponseType;
+  totalPages: number;
 };

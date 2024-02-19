@@ -17,6 +17,27 @@ export interface IBranchPharmacy {
   allowBranchesForToggleAvailability?: boolean;
 }
 
+export interface IpharmacyBranchListData {
+  docs: IbranchDetailsData[];
+  totalRecords: number;
+  perPage: number;
+  currentPage: number;
+  totalPages: number;
+}
+export interface IpharmacyBranchListResponse extends BaseApiResponse {
+  data: IpharmacyBranchListData;
+}
+
+export interface IListPharmacyBranchPayload {
+  pharmacyId?: number;
+  page: number;
+  length: number;
+  search?: string;
+  sortOrder?: string;
+  sortBy?: string;
+}
+
+
 export interface IPharmacyBranchWorkingHour {
   id: number;
   pharmacyBranchWorkingDayId: number;
