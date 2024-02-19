@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   TableFooter,
+  TablePagination,
   Typography
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -31,7 +32,7 @@ type Props = {
 }
 
 const OrderOverviewCard = ({ orderoverdata, orderid }: Props) => {
-  const dateformat = "YYYY-MM-DD, HH:mm"
+  const dateformat = "YYYY-MM-DD, HH:mm";
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -303,8 +304,6 @@ const OrderOverviewCard = ({ orderoverdata, orderid }: Props) => {
                 )
               })
             }
-
-            <PaginationSection />
           </>
         ) : (
           <>

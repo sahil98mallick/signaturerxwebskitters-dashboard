@@ -24,7 +24,7 @@ import { OrderStatusesEnum, OrderStatusesType } from "typescript/interface/order
 
 export default function OrderOverview() {
   const [online, setonline] = useState(true);
-  const [sortkey, setSortkey] = useState<string>("")
+  const [sortkey, setSortkey] = useState<string>("DSC")
   const [filterData, setfilterData] = useState("Pending");
   const [orderStatus, setorderStatus] = useState("pending");
   const onDataCallbackFilter = (data: any) => {
@@ -59,14 +59,14 @@ export default function OrderOverview() {
 
   // Order Received Lists fetch
   const { data: orderlists, isLoading: orderlistloading, isError: orderlistserror } = useQuery({
-    queryKey: ["orderlists", { id, filterData }],
+    queryKey: ["orderlists", { id, filterData, sortkey }],
     queryFn: () => Orderreceivedlists(
       {
         pharmacyBranchId: Number(id),
         page: 1,
         length: 5,
         keyword: "",
-        sortOrder: "",
+        sortOrder: sortkey,
         orderStatus: orderStatus,
         actionPendingBy: ""
       }
@@ -168,12 +168,11 @@ export default function OrderOverview() {
                 }}
                 className="form_select"
                 defaultValue=""
-                displayEmpty
                 value={sortkey}
                 onChange={(e) => setSortkey(e.target.value as unknown as string)}
 
               >
-                <MenuItem value={"ASC"}>Sort</MenuItem>
+                <MenuItem value={"SelectItem"}>Select Sort Order</MenuItem>
                 <MenuItem value={"ASC"} className="menu_item">Ascending</MenuItem>
                 <MenuItem value={"DSC"} className="menu_item">Descending</MenuItem>
               </CustomSelect>

@@ -90,11 +90,11 @@ const Home = () => {
     queryFn: () => fetchpharmacybranchlists({
       page: currentPage,
       length: itemsPerPage,
-      search: searchQuery,
+      search: "",
       sortBy: "id",
       sortOrder: "DESC"
     }),
-    queryKey: ["branchlists", currentPage, searchQuery]
+    queryKey: ["branchlists", currentPage]
   })
 
   // Search Implementation
