@@ -48,7 +48,7 @@ export default function Wrapper({ children ,defaultHeader=false}: WrapperProps) 
       <HeaderPage defaultHeader={defaultHeader}/>
       <Box className="main_body">{children}</Box>
 
-      <Footer />
+    <Footer/>
     </WrapperStyle>
   );
 }

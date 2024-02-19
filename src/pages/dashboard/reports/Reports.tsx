@@ -41,7 +41,7 @@ const Reports = () => {
   const { data: pharmacyBranchListData } = useQuery(
     ["pharmacy-branch-list", 1],
     {
-      queryFn: ({ signal }) =>
+      queryFn: () =>
       fetchpharmacybranchlists(
           {
             page: 1,
@@ -50,7 +50,7 @@ const Reports = () => {
             sortBy: "id",
             sortOrder: "DESC"
           },
-          // signal
+         
         ),
       refetchOnWindowFocus: true,
       refetchOnMount: true
