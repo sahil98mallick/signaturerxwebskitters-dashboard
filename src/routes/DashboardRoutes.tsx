@@ -3,6 +3,7 @@ import React from "react";
 import { Navigate, RouteObject } from "react-router";
 import ProtectedRouteWrapper from "./ProtectedRoute";
 import OrderDetailsOverview from "pages/dashboard/branch/OrderOverview/OrderDetailsOverview";
+import Accountinformation from "pages/Accountinformation/Accountinformation";
 
 /* These lines of code are using the React.lazy function to dynamically import the components for each
 route. React.lazy is a function that allows for lazy loading of components, meaning that the
@@ -50,6 +51,7 @@ const Pharmacyinformation = React.lazy(() => import("pages/pharmacy/Pharmacyinfo
 
 /* The `routes` constant is an array of objects that define the routes for a React application. Each
 object in the array represents a specific route and contains two properties: `path` and `element`. */
+
 const DashBoardRoutes: RouteObject[] = [
   {
     path: "/",
@@ -125,6 +127,16 @@ const DashBoardRoutes: RouteObject[] = [
       <PageLoaders>
         <ProtectedRouteWrapper>
           <Pharmacyinformation />
+        </ProtectedRouteWrapper>
+      </PageLoaders>
+    )
+  },
+  {
+    path: "/dashboard/account/information",
+    element: (
+      <PageLoaders>
+        <ProtectedRouteWrapper>
+          <Accountinformation />
         </ProtectedRouteWrapper>
       </PageLoaders>
     )

@@ -200,3 +200,80 @@
     width: 100% !important;
   }
 }
+
+/* Perosonal Information */
+.personalcontainer {
+  width: 100%;
+  height: auto;
+  margin: auto;
+  padding-bottom: 10px;
+}
+
+.personalmainbox {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.personalcard {
+  width: 90%;
+  height: auto;
+  padding-bottom: 10px;
+  /* background-color: #282c34; */
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  margin: auto;
+}
+
+.personal-main {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.personalinfo1 {
+  width: 250px;
+  height: 200px;
+  border-radius: 10px;
+  /* background-color: blue; */
+  padding: 20px;
+}
+
+.personalinfo2 {
+  width: 800px;
+  height: auto;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  /* background-color: blue; */
+}
+
+.personalinfo3 {
+  width: 250px;
+  height: 200px;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.personalinfo4 {
+  width: 800px;
+  height: auto;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  /* background-color: blue; */
+}
+
+.inputsform {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 20px;
+}
+
+.contactinputs {
+  width: 400px;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

@@ -25,8 +25,6 @@ const Pharmacyinformation = () => {
         queryKey: ["pharmachdetails"],
         queryFn: () => Fetchpharmacy()
     })
-    // console.log("lat", pharmacydetails?.latitude);
-    // console.log("long", pharmacydetails?.longitude);
 
     const mapposition: LatLngExpression = useMemo(() => [pharmacydetails?.longitude || 54.989, pharmacydetails?.latitude || 73.369], [pharmacydetails]);
     if (isLoading) return <> <div><LinearProgress /></div> </>
